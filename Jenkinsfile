@@ -13,21 +13,10 @@ pipeline {
                 bat 'docker build -t myapp-image .'
             }
         }
-
-        stage('Stop Existing Container') {
-            steps {
-                script {
-                    // Stop and remove any existing container using port 8080
-                    bat '''
-                    FOR /F "tokens=*" %%i IN ('docker ps -q --filter "ancestor=myapp-image"') DO docker stop %%i
-                    '''
-                }
-            }
-        }
-
+        
         stage('Run Docker Container') {
             steps {
-                bat 'docker run -d -p 8080:80 myapp-image'
+                bat 'docker run -d -p 9999:80 myapp-image'
             }
         }
     }

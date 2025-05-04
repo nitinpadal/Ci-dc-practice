@@ -2,21 +2,21 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone Repository') {
+        stage('Cleanup and Stop Containers') {
             steps {
-                git 'https://github.com/nitinpadal/Ci-dc-practice.git'
+                script {
+                    // Stop and remove any containers, networks, or volumes defined in docker-compose.yml
+                    bat 'docker-compose down'
+                }
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                bat 'docker build -t myapp-image .'
-            }
-        }
-        
         stage('Run Docker Container') {
             steps {
-                bat 'docker run -d -p 9999:80 myapp-image'
+                script {
+                    // Start the container using docker-compose
+                    bat 'docker-compose up -d'
+                }
             }
         }
     }

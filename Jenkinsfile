@@ -4,14 +4,18 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git url: 'https://github.com/nitinpadal/Ci-dc-practice.git', branch: 'master'
+                git 'https://github.com/nitinpadal/Ci-dc-practice.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("ci-dc-practice-image")
+                    if (isUnix()) {
+                        sh 'docker build -t myapp-image .'
+                    } else {
+                        bat 'docker build -t myapp-image .'
+                    }
                 }
             }
         }
@@ -19,7 +23,11 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    dockerImage.run("-p 8080:80")
+                    if (isUnix()) {
+                        sh 'docker run -d -p 8080:8080 myapp-image'
+                    } else {
+                        bat 'docker run -d -p 8080:8080 myapp-image'
+                    }
                 }
             }
         }

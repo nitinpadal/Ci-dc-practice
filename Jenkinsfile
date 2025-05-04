@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git url: 'https://github.com/nitinpadal/Ci-dc-practice.git', branch: 'main'
+                git url: 'https://github.com/nitinpadal/Ci-dc-practice.git', branch: 'master'
             }
         }
 
